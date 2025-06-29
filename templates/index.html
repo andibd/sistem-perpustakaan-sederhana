@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistem Manajemen Perpustakaan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #f0f4f8; /* Light blue-gray background */
+      }
+      .card {
+        background-color: white;
+        border-radius: 0.75rem; /* rounded-xl */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* shadow-md */
+        padding: 1.5rem; /* p-6 */
+      }
+      .btn-primary {
+        background-color: #4f46e5; /* indigo-600 */
+        color: white;
+        padding: 0.75rem 1.5rem; /* py-3 px-6 */
+        border-radius: 0.5rem; /* rounded-lg */
+        font-weight: 600; /* font-semibold */
+        transition: background-color 0.2s;
+      }
+      .btn-primary:hover {
+        background-color: #4338ca; /* indigo-700 */
+      }
+      .btn-secondary {
+        background-color: #6b7280; /* gray-500 */
+        color: white;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.5rem;
+        font-weight: 600;
+        transition: background-color 0.2s;
+      }
+      .btn-secondary:hover {
+        background-color: #4b5563; /* gray-600 */
+      }
+      .btn-success {
+        background-color: #22c55e; /* green-500 */
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: background-color 0.2s;
+      }
+      .btn-success:hover {
+        background-color: #16a34a; /* green-600 */
+      }
+      .btn-danger {
+        background-color: #ef4444; /* red-500 */
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        font-weight: 500;
+        transition: background-color 0.2s;
+      }
+      .btn-danger:hover {
+        background-color: #dc2626; /* red-600 */
+      }
+      input[type="text"],
+      input[type="number"],
+      input[type="email"],
+      input[type="tel"] {
+        border: 1px solid #d1d5db; /* gray-300 */
+        border-radius: 0.5rem; /* rounded-lg */
+        padding: 0.75rem 1rem;
+        width: 100%;
+        box-sizing: border-box; /* Ensures padding doesn't increase total width */
+        transition: border-color 0.2s;
+      }
+      input[type="text"]:focus,
+      input[type="number"]:focus,
+      input[type="email"]:focus,
+      input[type="tel"]:focus {
+        outline: none;
+        border-color: #6366f1; /* indigo-500 */
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); /* ring-indigo-200 */
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 0.75rem;
+        text-align: left;
+        border-bottom: 1px solid #e5e7eb; /* gray-200 */
+      }
+      th {
+        background-color: #f9fafb; /* gray-50 */
+        font-weight: 600;
+      }
+      .tab-button.active {
+        border-bottom: 3px solid #4f46e5; /* indigo-600 */
+        color: #4f46e5;
+        font-weight: 600;
+      }
+      .message-box {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #4caf50; /* Green */
+        color: white;
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        display: none; /* Hidden by default */
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+      .message-box.error {
+        background-color: #f44336; /* Red */
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+      <h1 class="text-4xl font-bold text-center text-gray-800 mb-8">Sistem Manajemen Perpustakaan Sederhana</h1>
+
+      <!-- Message Box for notifications -->
+      <div id="messageBox" class="message-box"></div>
+
+      <div class="card mb-8">
+        <div class="flex border-b border-gray-200 mb-6">
+          <button id="tabBuku" class="tab-button py-3 px-6 text-lg text-gray-600 border-b-3 border-transparent transition-all duration-200 active">Daftar Buku</button>
+          <button id="tabAnggota" class="tab-button py-3 px-6 text-lg text-gray-600 border-b-3 border-transparent transition-all duration-200">Daftar Anggota</button>
+          <button id="tabPeminjaman" class="tab-button py-3 px-6 text-lg text-gray-600 border-b-3 border-transparent transition-all duration-200">Peminjaman</button>
+        </div>
+
+        <!-- Bagian Buku -->
+        <div id="contentBuku" class="tab-content">
+          <h2 class="text-2xl font-semibold text-gray-700 mb-4">Kelola Buku</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card">
+              <h3 class="text-xl font-semibold text-gray-700 mb-4">Tambah Buku Baru</h3>
+              <form id="formTambahBuku" class="space-y-4">
+                <div>
+                  <label for="judul" class="block text-sm font-medium text-gray-700 mb-1">Judul</label>
+                  <input type="text" id="judul" name="judul" required placeholder="Judul Buku" />
+                </div>
+                <div>
+                  <label for="pengarang" class="block text-sm font-medium text-gray-700 mb-1">Pengarang</label>
+                  <input type="text" id="pengarang" name="pengarang" required placeholder="Nama Pengarang" />
+                </div>
+                <div>
+                  <label for="penerbit" class="block text-sm font-medium text-gray-700 mb-1">Penerbit</label>
+                  <input type="text" id="penerbit" name="penerbit" placeholder="Nama Penerbit" />
+                </div>
+                <div>
+                  <label for="tahun_terbit" class="block text-sm font-medium text-gray-700 mb-1">Tahun Terbit</label>
+                  <input type="number" id="tahun_terbit" name="tahun_terbit" placeholder="Tahun Terbit (Contoh: 2023)" />
+                </div>
+                <div>
+                  <label for="isbn" class="block text-sm font-medium text-gray-700 mb-1">ISBN</label>
+                  <input type="text" id="isbn" name="isbn" placeholder="ISBN (Contoh: 978-3-16-148410-0)" />
+                </div>
+                <div>
+                  <label for="jumlah_stok_buku" class="block text-sm font-medium text-gray-700 mb-1">Jumlah Stok</label>
+                  <input type="number" id="jumlah_stok_buku" name="jumlah_stok_buku" value="1" min="0" required />
+                </div>
+                <button type="submit" class="btn-primary w-full">Tambah Buku</button>
+              </form>
+            </div>
+            <div class="card overflow-x-auto">
+              <h3 class="text-xl font-semibold text-gray-700 mb-4">Daftar Buku Tersedia</h3>
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Judul</th>
+                    <th>Pengarang</th>
+                    <th>Stok</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="daftarBukuBody" class="bg-white divide-y divide-gray-200">
+                  <!-- Data buku akan dimuat di sini oleh JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bagian Anggota -->
+        <div id="contentAnggota" class="tab-content hidden">
+          <h2 class="text-2xl font-semibold text-gray-700 mb-4">Kelola Anggota</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card">
+              <h3 class="text-xl font-semibold text-gray-700 mb-4">Tambah Anggota Baru</h3>
+              <form id="formTambahAnggota" class="space-y-4">
+                <div>
+                  <label for="nama_anggota" class="block text-sm font-medium text-gray-700 mb-1">Nama</label>
+                  <input type="text" id="nama_anggota" name="nama" required placeholder="Nama Lengkap Anggota" />
+                </div>
+                <div>
+                  <label for="alamat_anggota" class="block text-sm font-medium text-gray-700 mb-1">Alamat</label>
+                  <input type="text" id="alamat_anggota" name="alamat" placeholder="Alamat Anggota" />
+                </div>
+                <div>
+                  <label for="telepon_anggota" class="block text-sm font-medium text-gray-700 mb-1">Telepon</label>
+                  <input type="tel" id="telepon_anggota" name="telepon" placeholder="Nomor Telepon" />
+                </div>
+                <div>
+                  <label for="email_anggota" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                  <input type="email" id="email_anggota" name="email" placeholder="Email Anggota" />
+                </div>
+                <button type="submit" class="btn-primary w-full">Tambah Anggota</button>
+              </form>
+            </div>
+            <div class="card overflow-x-auto">
+              <h3 class="text-xl font-semibold text-gray-700 mb-4">Daftar Anggota</h3>
+              <table class="min-w-full divide-y divide-gray-200">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Nama</th>
+                    <th>Email</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="daftarAnggotaBody" class="bg-white divide-y divide-gray-200">
+                  <!-- Data anggota akan dimuat di sini oleh JavaScript -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bagian Peminjaman -->
+        <div id="contentPeminjaman" class="tab-content hidden">
+          <h2 class="text-2xl font-semibold text-gray-700 mb-4">Transaksi Peminjaman & Pengembalian</h2>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="card">
+              <h3 class="text-xl font-semibold text-gray-700 mb-4">Catat Peminjaman Baru</h3>
+              <form id="formPeminjaman" class="space-y-4">
+                <div>
+                  <label for="peminjaman_id_buku" class="block text-sm font-medium text-gray-700 mb-1">ID Buku</label>
+                  <input type="number" id="peminjaman_id_buku" required placeholder="ID Buku" />
+                </div>
+                <div>
+                  <label for="peminjaman_id_anggota" class="block text-sm font-medium text-gray-700 mb-1">ID Anggota</label>
+                  <input type="number" id="peminjaman_id_anggota" required placeholder="ID Anggota" />
+                </div>
+                <button type="submit" class="btn-primary w-full">Pinjam Buku</button>
+              </form>
+            </div>
+            <div class="card">
+              <h3 class="text-xl font-semibold text-gray-700 mb-4">Daftar Peminjaman Aktif</h3>
+              <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                  <thead>
+                    <tr>
+                      <th>ID Pinjam</th>
+                      <th>Buku</th>
+                      <th>Anggota</th>
+                      <th>Tgl Pinjam</th>
+                      <th>Status</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="daftarPeminjamanBody" class="bg-white divide-y divide-gray-200">
+                    <!-- Data peminjaman akan dimuat di sini oleh JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API_BASE_URL = window.location.origin; // Asumsi backend berjalan di port yang sama
+      // Jika backend berjalan di port lain (misal: 5000), gunakan:
+      // const API_BASE_URL = 'http://localhost:5000';
+
+      // --- Fungsi Helper untuk Menampilkan Pesan ---
+      function showMessage(message, isError = false) {
+        const messageBox = document.getElementById("messageBox");
+        messageBox.textContent = message;
+        messageBox.className = "message-box"; // Reset classes
+        if (isError) {
+          messageBox.classList.add("error");
+        }
+        messageBox.style.display = "block";
+        messageBox.style.opacity = "1";
+        setTimeout(() => {
+          messageBox.style.opacity = "0";
+          setTimeout(() => {
+            messageBox.style.display = "none";
+          }, 300); // Wait for fade out to complete
+        }, 3000); // Display for 3 seconds
+      }
+
+      // --- Fungsi untuk Mengelola Tampilan Tab ---
+      function setupTabs() {
+        const tabButtons = document.querySelectorAll(".tab-button");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        tabButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            // Hapus kelas 'active' dari semua tombol dan sembunyikan semua konten
+            tabButtons.forEach((btn) => btn.classList.remove("active"));
+            tabContents.forEach((content) => content.classList.add("hidden"));
+
+            // Tambahkan kelas 'active' ke tombol yang diklik
+            button.classList.add("active");
+            // Tampilkan konten yang sesuai
+            const targetContentId = button.id.replace("tab", "content");
+            document.getElementById(targetContentId).classList.remove("hidden");
+
+            // Muat ulang data saat tab diganti
+            if (targetContentId === "contentBuku") {
+              fetchBuku();
+            } else if (targetContentId === "contentAnggota") {
+              fetchAnggota();
+            } else if (targetContentId === "contentPeminjaman") {
+              fetchPeminjaman();
+            }
+          });
+        });
+        // Aktifkan tab pertama secara default saat load
+        document.getElementById("tabBuku").click();
+      }
+
+      // --- Fungsi CRUD Buku ---
+      async function fetchBuku() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/buku`);
+          const bukuList = await response.json();
+          const daftarBukuBody = document.getElementById("daftarBukuBody");
+          daftarBukuBody.innerHTML = ""; // Kosongkan tabel sebelum mengisi
+
+          if (bukuList.length === 0) {
+            daftarBukuBody.innerHTML = `<tr><td colspan="5" class="text-center py-4 text-gray-500">Belum ada buku terdaftar.</td></tr>`;
+            return;
+          }
+
+          bukuList.forEach((buku) => {
+            const row = daftarBukuBody.insertRow();
+            row.innerHTML = `
+                        <td>${buku.id_buku}</td>
+                        <td>${buku.judul}</td>
+                        <td>${buku.pengarang}</td>
+                        <td>${buku.jumlah_stok}</td>
+                        <td class="flex space-x-2">
+                            <button class="btn-secondary px-3 py-1 text-sm" onclick="editBuku(${buku.id_buku})">Edit</button>
+                            <button class="btn-danger px-3 py-1 text-sm" onclick="deleteBuku(${buku.id_buku})">Hapus</button>
+                        </td>
+                    `;
+          });
+        } catch (error) {
+          console.error("Error fetching buku:", error);
+          showMessage("Gagal memuat daftar buku.", true);
+        }
+      }
+
+      document.getElementById("formTambahBuku").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const bukuData = Object.fromEntries(formData.entries());
+        bukuData.tahun_terbit = parseInt(bukuData.tahun_terbit) || null; // Convert to number or null
+        bukuData.jumlah_stok = parseInt(bukuData.jumlah_stok_buku) || 0; // Convert to number
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/buku`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(bukuData),
+          });
+          const result = await response.json();
+          if (response.ok) {
+            showMessage(result.message);
+            e.target.reset(); // Reset form
+            fetchBuku(); // Refresh list
+          } else {
+            showMessage(result.message, true);
+          }
+        } catch (error) {
+          console.error("Error adding buku:", error);
+          showMessage("Terjadi kesalahan saat menambahkan buku.", true);
+        }
+      });
+
+      async function deleteBuku(id_buku) {
+        if (!confirm("Apakah Anda yakin ingin menghapus buku ini?")) {
+          // Using confirm as per instruction to show custom modal for confirmation
+          return;
+        }
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/buku/${id_buku}`, {
+            method: "DELETE",
+          });
+          if (response.ok) {
+            showMessage("Buku berhasil dihapus!");
+            fetchBuku(); // Refresh list
+          } else {
+            const result = await response.json();
+            showMessage(result.message, true);
+          }
+        } catch (error) {
+          console.error("Error deleting buku:", error);
+          showMessage("Terjadi kesalahan saat menghapus buku.", true);
+        }
+      }
+
+      async function editBuku(id_buku) {
+        // Placeholder for edit functionality.
+        // In a full application, this would open a modal or navigate to an edit page.
+        // For simplicity, we'll just log and show a message.
+        showMessage(`Fitur edit buku (ID: ${id_buku}) akan dikembangkan lebih lanjut.`, false);
+        console.log(`Edit buku dengan ID: ${id_buku}`);
+        // Example: fetch existing data for a form
+        // const response = await fetch(`${API_BASE_URL}/api/buku/${id_buku}`);
+        // const buku = await response.json();
+        // console.log('Data buku untuk diedit:', buku);
+      }
+
+      // --- Fungsi CRUD Anggota ---
+      async function fetchAnggota() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/anggota`);
+          const anggotaList = await response.json();
+          const daftarAnggotaBody = document.getElementById("daftarAnggotaBody");
+          daftarAnggotaBody.innerHTML = ""; // Kosongkan tabel sebelum mengisi
+
+          if (anggotaList.length === 0) {
+            daftarAnggotaBody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-gray-500">Belum ada anggota terdaftar.</td></tr>`;
+            return;
+          }
+
+          anggotaList.forEach((anggota) => {
+            const row = daftarAnggotaBody.insertRow();
+            row.innerHTML = `
+                        <td>${anggota.id_anggota}</td>
+                        <td>${anggota.nama}</td>
+                        <td>${anggota.email || "-"}</td>
+                        <td class="flex space-x-2">
+                            <button class="btn-secondary px-3 py-1 text-sm" onclick="editAnggota(${anggota.id_anggota})">Edit</button>
+                            <button class="btn-danger px-3 py-1 text-sm" onclick="deleteAnggota(${anggota.id_anggota})">Hapus</button>
+                        </td>
+                    `;
+          });
+        } catch (error) {
+          console.error("Error fetching anggota:", error);
+          showMessage("Gagal memuat daftar anggota.", true);
+        }
+      }
+
+      document.getElementById("formTambahAnggota").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+        const anggotaData = Object.fromEntries(formData.entries());
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/anggota`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(anggotaData),
+          });
+          const result = await response.json();
+          if (response.ok) {
+            showMessage(result.message);
+            e.target.reset();
+            fetchAnggota();
+          } else {
+            showMessage(result.message, true);
+          }
+        } catch (error) {
+          console.error("Error adding anggota:", error);
+          showMessage("Terjadi kesalahan saat menambahkan anggota.", true);
+        }
+      });
+
+      async function deleteAnggota(id_anggota) {
+        if (!confirm("Apakah Anda yakin ingin menghapus anggota ini?")) {
+          return;
+        }
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/anggota/${id_anggota}`, {
+            method: "DELETE",
+          });
+          if (response.ok) {
+            showMessage("Anggota berhasil dihapus!");
+            fetchAnggota();
+          } else {
+            const result = await response.json();
+            showMessage(result.message, true);
+          }
+        } catch (error) {
+          console.error("Error deleting anggota:", error);
+          showMessage("Terjadi kesalahan saat menghapus anggota.", true);
+        }
+      }
+
+      async function editAnggota(id_anggota) {
+        showMessage(`Fitur edit anggota (ID: ${id_anggota}) akan dikembangkan lebih lanjut.`, false);
+        console.log(`Edit anggota dengan ID: ${id_anggota}`);
+      }
+
+      // --- Fungsi CRUD Peminjaman ---
+      async function fetchPeminjaman() {
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/peminjaman`);
+          const peminjamanList = await response.json();
+          const daftarPeminjamanBody = document.getElementById("daftarPeminjamanBody");
+          daftarPeminjamanBody.innerHTML = ""; // Kosongkan tabel sebelum mengisi
+
+          if (peminjamanList.length === 0) {
+            daftarPeminjamanBody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-gray-500">Belum ada transaksi peminjaman.</td></tr>`;
+            return;
+          }
+
+          peminjamanList.forEach((peminjaman) => {
+            const row = daftarPeminjamanBody.insertRow();
+            row.innerHTML = `
+                        <td>${peminjaman.id_peminjaman}</td>
+                        <td>${peminjaman.judul_buku || "N/A"}</td>
+                        <td>${peminjaman.nama_anggota || "N/A"}</td>
+                        <td>${peminjaman.tanggal_pinjam}</td>
+                        <td><span class="${peminjaman.status === "Dipinjam" ? "text-red-500 font-medium" : "text-green-600 font-medium"}">${peminjaman.status}</span></td>
+                        <td>
+                            ${
+                              peminjaman.status === "Dipinjam"
+                                ? `<button class="btn-success px-3 py-1 text-sm" onclick="kembalikanBuku(${peminjaman.id_peminjaman})">Kembalikan</button>`
+                                : `<span class="text-gray-500 text-sm">Selesai</span>`
+                            }
+                        </td>
+                    `;
+          });
+        } catch (error) {
+          console.error("Error fetching peminjaman:", error);
+          showMessage("Gagal memuat daftar peminjaman.", true);
+        }
+      }
+
+      document.getElementById("formPeminjaman").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const id_buku = document.getElementById("peminjaman_id_buku").value;
+        const id_anggota = document.getElementById("peminjaman_id_anggota").value;
+
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/peminjaman`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ id_buku: parseInt(id_buku), id_anggota: parseInt(id_anggota) }),
+          });
+          const result = await response.json();
+          if (response.ok) {
+            showMessage(result.message);
+            e.target.reset();
+            fetchPeminjaman();
+            fetchBuku(); // Refresh buku list as stock might change
+          } else {
+            showMessage(result.message, true);
+          }
+        } catch (error) {
+          console.error("Error recording peminjaman:", error);
+          showMessage("Terjadi kesalahan saat mencatat peminjaman.", true);
+        }
+      });
+
+      async function kembalikanBuku(id_peminjaman) {
+        if (!confirm("Apakah Anda yakin ingin mengembalikan buku ini?")) {
+          return;
+        }
+        try {
+          const response = await fetch(`${API_BASE_URL}/api/peminjaman/${id_peminjaman}/kembali`, {
+            method: "PUT",
+          });
+          const result = await response.json();
+          if (response.ok) {
+            showMessage(result.message);
+            fetchPeminjaman();
+            fetchBuku(); // Refresh buku list as stock might change
+          } else {
+            showMessage(result.message, true);
+          }
+        } catch (error) {
+          console.error("Error returning buku:", error);
+          showMessage("Terjadi kesalahan saat mengembalikan buku.", true);
+        }
+      }
+
+      // --- Inisialisasi Aplikasi ---
+      document.addEventListener("DOMContentLoaded", () => {
+        setupTabs(); // Mengatur tombol tab dan tampilan konten
+      });
+    </script>
+  </body>
+</html>
