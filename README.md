@@ -60,8 +60,10 @@ Ikuti langkah-langkah di bawah ini untuk menyiapkan dan menjalankan aplikasi di 
 1. Kloning Repositori (Jika dari GitHub)
 Jika Anda mengambil proyek ini dari GitHub, kloning repositori:
 
+```
 git clone https://github.com/NamaUserAnda/NamaRepoProyekAnda.git
 cd NamaRepoProyekAnda
+```
 
 (Ganti NamaUserAnda/NamaRepoProyekAnda dengan detail repositori Anda)
 
