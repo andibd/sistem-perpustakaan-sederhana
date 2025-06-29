@@ -1,58 +1,60 @@
 Sistem Manajemen Perpustakaan Sederhana
 Proyek ini adalah implementasi sistem manajemen data perpustakaan sederhana yang dibangun menggunakan Python Flask sebagai backend dan HTML/CSS/JavaScript sebagai frontend, dengan SQLite sebagai sistem manajemen basis datanya.
 
-Fitur Aplikasi
-Manajemen Buku:
+#Fitur Aplikasi
 
-Menambahkan buku baru (Judul, Pengarang, Penerbit, Tahun Terbit, ISBN, Jumlah Stok).
+- Manajemen Buku:
 
-Melihat daftar semua buku yang tersedia beserta stoknya.
+  - Menambahkan buku baru (Judul, Pengarang, Penerbit, Tahun Terbit, ISBN, Jumlah Stok).
 
-(Fitur Edit dan Hapus Buku tersedia secara fungsional di backend API, namun tombol di UI frontend belum sepenuhnya diimplementasikan sebagai modal form).
+  - Melihat daftar semua buku yang tersedia beserta stoknya.
 
-Manajemen Anggota:
+  - (Fitur Edit dan Hapus Buku tersedia secara fungsional di backend API, namun tombol di UI frontend belum sepenuhnya diimplementasikan sebagai modal form).
 
-Menambahkan anggota baru (Nama, Alamat, Telepon, Email).
+- Manajemen Anggota:
 
-Melihat daftar semua anggota perpustakaan.
+  - Menambahkan anggota baru (Nama, Alamat, Telepon, Email).
 
-(Fitur Edit dan Hapus Anggota tersedia secara fungsional di backend API, namun tombol di UI frontend belum sepenuhnya diimplementasikan sebagai modal form).
+  - Melihat daftar semua anggota perpustakaan.
 
-Manajemen Peminjaman:
+  - (Fitur Edit dan Hapus Anggota tersedia secara fungsional di backend API, namun tombol di UI frontend belum sepenuhnya diimplementasikan sebagai modal form).
 
-Mencatat transaksi peminjaman buku oleh anggota.
+- Manajemen Peminjaman:
 
-Melihat daftar peminjaman aktif.
+  - Mencatat transaksi peminjaman buku oleh anggota.
 
-Mencatat pengembalian buku (mengubah status peminjaman dan menambah stok buku).
+  - Melihat daftar peminjaman aktif.
 
-Teknologi yang Digunakan
-Backend:
+  - Mencatat pengembalian buku (mengubah status peminjaman dan menambah stok buku).
 
-Python 3: Bahasa pemrograman utama.
+#Teknologi yang Digunakan
 
-Flask: Framework web mikro untuk membangun API backend.
+- Backend:
 
-Flask-SQLAlchemy: Ekstensi Flask untuk integrasi dengan SQLAlchemy ORM, mempermudah interaksi dengan database.
+  - Python 3: Bahasa pemrograman utama.
 
-SQLite: Sistem manajemen basis data ringan dan serverless, cocok untuk proyek kecil dan pengembangan. Database disimpan dalam file perpustakaan.db.
+  - Flask: Framework web mikro untuk membangun API backend.
 
-Frontend:
+  - Flask-SQLAlchemy: Ekstensi Flask untuk integrasi dengan SQLAlchemy ORM, mempermudah interaksi dengan database.
 
-HTML5: Struktur dasar halaman web.
+  - SQLite: Sistem manajemen basis data ringan dan serverless, cocok untuk proyek kecil dan pengembangan. Database disimpan dalam file perpustakaan.db.
 
-CSS3 (Tailwind CSS): Styling dan desain antarmuka pengguna.
+- Frontend:
 
-JavaScript: Logika interaktif untuk memanggil API backend dan memperbarui UI.
+  - HTML5: Struktur dasar halaman web.
 
-Persyaratan Sistem
+  - CSS3 (Tailwind CSS): Styling dan desain antarmuka pengguna.
+
+  - JavaScript: Logika interaktif untuk memanggil API backend dan memperbarui UI.
+
+#Persyaratan Sistem
 Sebelum menjalankan aplikasi ini, pastikan Anda memiliki perangkat lunak berikut terinstal di komputer Anda:
 
-Python 3.x (disarankan Python 3.8 atau lebih tinggi)
+- Python 3.x (disarankan Python 3.8 atau lebih tinggi)
 
-pip (Package Installer for Python) - biasanya sudah terinstal bersama Python.
+- pip (Package Installer for Python) - biasanya sudah terinstal bersama Python.
 
-Git (opsional, jika Anda ingin mengkloning repositori ini atau mengunggah ke GitHub)
+- Git (opsional, jika Anda ingin mengkloning repositori ini atau mengunggah ke GitHub)
 
 Cara Instalasi dan Menjalankan Aplikasi
 Ikuti langkah-langkah di bawah ini untuk menyiapkan dan menjalankan aplikasi di lingkungan lokal Anda:
@@ -109,16 +111,15 @@ Struktur Proyek
 └── index.html # Frontend aplikasi web (dipindahkan ke sini)
 
 Penjelasan Singkat Fungsi
-app.py: Ini adalah "otak" aplikasi. Ia mendefinisikan model untuk Buku, Anggota, dan Peminjaman yang berhubungan langsung dengan tabel di database SQLite. File ini juga menyediakan API (Application Programming Interface) yang memungkinkan frontend berkomunikasi dengannya untuk menambah, melihat, mengedit, dan menghapus data (operasi CRUD).
 
-index.html: Ini adalah antarmuka pengguna grafis (GUI) yang Anda lihat di browser. Menggunakan HTML untuk struktur, Tailwind CSS untuk tampilan visual yang menarik, dan JavaScript untuk interaktivitas. JavaScript di sini bertugas memanggil API yang ada di app.py untuk mengambil atau mengirim data.
+- app.py: Ini adalah "otak" aplikasi. Ia mendefinisikan model untuk Buku, Anggota, dan Peminjaman yang berhubungan langsung dengan tabel di database SQLite. File ini juga menyediakan API (Application Programming Interface) yang memungkinkan frontend berkomunikasi dengannya untuk menambah, melihat, mengedit, dan menghapus data (operasi CRUD).
 
-populate_db.py: Skrip ini bersifat utilitas. Gunakan ini sekali di awal untuk menyiapkan database kosong atau untuk mengisi database dengan beberapa data dummy, mempermudah pengujian dan demonstrasi.
+- index.html: Ini adalah antarmuka pengguna grafis (GUI) yang Anda lihat di browser. Menggunakan HTML untuk struktur, Tailwind CSS untuk tampilan visual yang menarik, dan JavaScript untuk interaktivitas. JavaScript di sini bertugas memanggil API yang ada di app.py untuk mengambil atau mengirim data.
 
-requirements.txt: Daftar semua pustaka Python eksternal yang dibutuhkan proyek ini (misalnya Flask, Flask-SQLAlchemy) beserta versi spesifiknya. Memastikan lingkungan pengembangan yang konsisten.
+- populate_db.py: Skrip ini bersifat utilitas. Gunakan ini sekali di awal untuk menyiapkan database kosong atau untuk mengisi database dengan beberapa data dummy, mempermudah pengujian dan demonstrasi.
 
-perpustakaan.db: File ini adalah database SQLite Anda. Ia akan dibuat secara otomatis saat app.py atau populate_db.py pertama kali dijalankan. Semua data buku, anggota, dan peminjaman Anda akan disimpan di sini.
+- requirements.txt: Daftar semua pustaka Python eksternal yang dibutuhkan proyek ini (misalnya Flask, Flask-SQLAlchemy) beserta versi spesifiknya. Memastikan lingkungan pengembangan yang konsisten.
 
-templates/: Folder ini adalah konvensi Flask. Flask mencari file HTML yang akan ditampilkan (render_template) di dalam folder ini.
+- perpustakaan.db: File ini adalah database SQLite Anda. Ia akan dibuat secara otomatis saat app.py atau populate_db.py pertama kali dijalankan. Semua data buku, anggota, dan peminjaman Anda akan disimpan di sini.
 
-Semoga README.md ini sangat membantu Anda dalam menyajikan proyek Anda!
+- templates/: Folder ini adalah konvensi Flask. Flask mencari file HTML yang akan ditampilkan (render_template) di dalam folder ini.
