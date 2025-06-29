@@ -72,36 +72,48 @@ cd NamaRepoProyekAnda
 
 Jika Anda hanya memiliki file-nya secara lokal, navigasikan langsung ke folder proyek:
 
-cd C:\Users\andib\Downloads\Data Andi\sibermu\Semester 2\Pengembangan Aplikasi Basis Data\tugas_akhir
+```
+cd path/ke/folder/proyek/anda
+```
 
 2. Instal Dependensi Python
    Instal semua pustaka Python yang diperlukan dari file requirements.txt:
 
+```
 pip install -r requirements.txt
+```
 
 3. Inisialisasi dan Isi Database (Opsional, tapi Direkomendasikan)
    Untuk mengisi database dengan data contoh agar Anda tidak mulai dari nol, jalankan skrip populate_db.py.
    PENTING: Pastikan server Flask (app.py) TIDAK sedang berjalan saat Anda menjalankan skrip ini.
 
+```
 python populate_db.py
+```
 
 Skrip ini akan membuat file perpustakaan.db jika belum ada, membuat tabel, dan mengisi beberapa data contoh buku, anggota, dan peminjaman.
 
 4. Jalankan Server Backend (Flask)
    Setelah dependensi terinstal dan database diinisialisasi (jika Anda memilih untuk melakukannya), Anda bisa menjalankan server Flask.
 
+```
 python app.py
+```
 
 Anda akan melihat output di terminal yang menunjukkan server berjalan, biasanya di http://127.0.0.1:5000/. Biarkan jendela terminal ini tetap terbuka.
 
 5. Akses Aplikasi Frontend
    Buka browser web favorit Anda (seperti Chrome, Firefox, Edge) dan masukkan alamat berikut di bilah URL:
 
+```
 http://127.0.0.1:5000/
+```
 
 Aplikasi Sistem Manajemen Perpustakaan akan muncul di browser Anda.
 
 Struktur Proyek
+
+```
 .
 ├── app.py # Backend aplikasi Flask dan definisi model database
 ├── index.html # Frontend aplikasi web (HTML, CSS, JavaScript)
@@ -109,6 +121,7 @@ Struktur Proyek
 ├── requirements.txt # Daftar pustaka Python yang dibutuhkan
 └── templates/ # Folder untuk file HTML (wajib oleh Flask)
 └── index.html # Frontend aplikasi web (dipindahkan ke sini)
+```
 
 Penjelasan Singkat Fungsi
 
