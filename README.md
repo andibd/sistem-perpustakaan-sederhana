@@ -1,6 +1,6 @@
 Sistem Manajemen Perpustakaan Sederhana
 Proyek ini adalah implementasi sistem manajemen data perpustakaan sederhana yang dibangun menggunakan Python Flask sebagai backend dan HTML/CSS/JavaScript sebagai frontend, dengan SQLite sebagai sistem manajemen basis datanya.
-<<<<<<< HEAD
+
 Fitur Aplikasi
 • Manajemen Buku:
 o Menambahkan buku baru (Judul, Pengarang, Penerbit, Tahun Terbit, ISBN, Jumlah Stok).
